@@ -5,7 +5,7 @@
 .DESCRIPTION
     1. Installs missing prerequisites via winget: Git, Python 3.11, Node.js LTS, FFmpeg.
     2. Clones OpenMontage into -InstallDir (or updates an existing checkout with git pull).
-    3. Creates the Python virtual environment .venv and installs requirements.txt + piper-tts.
+    3. Creates the Python virtual environment .venv and installs requirements-dev.txt (includes requirements.txt and pytest) + piper-tts.
     4. Installs the Remotion composer (npm install) and warms the HyperFrames npx cache.
     5. Creates .env from .env.example if it does not exist yet.
     6. Optional (-Demo): renders the three zero-key demo videos.
@@ -166,8 +166,8 @@ if (-not (Test-Path $venvPy)) {
     Invoke-Native $pyExe ($pyArgs + @("-m", "venv", ".venv")) | Out-Null
 }
 Invoke-Native $venvPy @("-m", "pip", "install", "--upgrade", "pip") | Out-Null
-Invoke-Native $venvPy @("-m", "pip", "install", "-r", "requirements.txt") | Out-Null
-Write-Ok "requirements.txt installiert"
+Invoke-Native $venvPy @("-m", "pip", "install", "-r", "requirements-dev.txt") | Out-Null
+Write-Ok "requirements-dev.txt installiert (inkl. pytest)"
 
 if (Invoke-Native $venvPy @("-m", "pip", "install", "piper-tts") -AllowFailure) {
     Write-Ok "Piper (Offline-Sprachausgabe) installiert"
