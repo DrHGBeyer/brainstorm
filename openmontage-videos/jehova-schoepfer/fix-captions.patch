@@ -1,0 +1,33 @@
+diff --git a/remotion-composer/src/components/CaptionOverlay.tsx b/remotion-composer/src/components/CaptionOverlay.tsx
+index 0142d68..ae76c7e 100644
+--- a/remotion-composer/src/components/CaptionOverlay.tsx
++++ b/remotion-composer/src/components/CaptionOverlay.tsx
+@@ -1,3 +1,4 @@
++import React from "react";
+ import {
+   AbsoluteFill,
+   Sequence,
+@@ -110,8 +111,8 @@ const PageRenderer: React.FC<{
+             const isActive = w.startMs <= currentMs && w.endMs > currentMs;
+             const isPast = w.endMs <= currentMs;
+             return (
++              <React.Fragment key={`${w.startMs}-${i}`}>
+               <span
+-                key={`${w.startMs}-${i}`}
+                 style={{
+                   // Keep each word unbroken so lines wrap only at word
+                   // boundaries. For space-delimited text this matches the
+@@ -125,8 +126,12 @@ const PageRenderer: React.FC<{
+                     : "0 2px 4px rgba(0,0,0,0.5)",
+                 }}
+               >
+-                {w.word}{i < page.words.length - 1 ? wordSeparator : ""}
++                {w.word}
+               </span>
++              {/* Separator sits outside the inline-block span: a trailing space
++                  inside an inline-block is collapsed and words run together. */}
++              {i < page.words.length - 1 ? wordSeparator : ""}
++              </React.Fragment>
+             );
+           })}
+         </span>
